@@ -1,0 +1,35 @@
+# Binários para programas e plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Binário de teste, construído com `go test -c`
+*.test
+
+# Saída da ferramenta de cobertura do go
+*.out
+
+# Diretório de trabalho do Delve (debugger)
+debug.elf
+
+# Arquivos de ambiente e chaves secretas
+.env
+.env.local
+
+# Diretório do Workspace do Go (se configurado)
+work.go
+
+# Dependências (Opcional: descomente se você não versiona a pasta vendor)
+# vendor/
+
+# Arquivos de sistema e diretórios de IDEs
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo

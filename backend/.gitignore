@@ -33,3 +33,5 @@ Thumbs.db
 *.sublime-project
 *.swp
 *.swo
+
+firebase-admin-sdk.json

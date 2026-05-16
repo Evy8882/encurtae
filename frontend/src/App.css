@@ -94,3 +94,23 @@ ul {
   display: grid;
   gap: 10px;
 }
+li {
+  background: #f1f5f9;
+  border: 1px solid #cbd5f5;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+.dangerous-btn{
+  margin-top: 8px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}

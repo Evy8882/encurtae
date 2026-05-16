@@ -1,3 +1,3 @@
-module example/hello
+module encurtae
 
 go 1.26.3

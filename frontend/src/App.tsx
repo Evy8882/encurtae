@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 interface UrlItem {
@@ -9,13 +9,14 @@ interface UrlItem {
 
 function App() {
   const [urlInput, setUrlInput] = useState("");
-  const [urls, setUrls] = useState<UrlItem[]>([
-    {
-      id: "1",
-      originalUrl: "https://www.exemplo.com/uma-url-muito-longa",
-      shortUrl: "http://encurtae.com/abc123",
-    },
-  ]);
+  const [urls, setUrls] = useState<UrlItem[]>([]);
+
+  useEffect(() => {
+    const storedUrls = localStorage.getItem("urls");
+    if (storedUrls) {
+      setUrls(JSON.parse(storedUrls));
+    }
+  }, []);
 
   async function handleAddUrl() {
     if (!urlInput.trim()) return;
@@ -44,6 +45,7 @@ function App() {
         };
 
         setUrls((prev) => [...prev, newUrl]);
+        localStorage.setItem("urls", JSON.stringify([...urls, newUrl]));
         setUrlInput("");
       })
       .catch((error) => {

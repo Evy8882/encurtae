@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import EditUrlModal from "../components/modal";
 
 interface UrlItem {
   id: string;
@@ -10,6 +11,8 @@ interface UrlItem {
 function App() {
   const [urlInput, setUrlInput] = useState("");
   const [urls, setUrls] = useState<UrlItem[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingUrl, setEditingUrl] = useState<UrlItem | null>(null);
 
   useEffect(() => {
     const storedUrls = localStorage.getItem("urls");
@@ -74,16 +77,39 @@ function App() {
               <li key={url.id}>
                 <strong>Original:</strong> {url.originalUrl} <br />
                 <strong>Encurtada:</strong> {url.shortUrl}
+                <div className="actions">
                 <button
                   className="dangerous-btn"
                   onClick={() => setUrls(urls.filter((u) => u.id !== url.id))}
                 >
                   Excluir
                 </button>
+                <button className="edit-btn" onClick={() => {
+                  setEditingUrl(url);
+                  setIsModalOpen(true);
+                }}>
+                  Editar
+                </button>
+                </div>
               </li>
             ))}
           </ul>
         </section>
+        <EditUrlModal
+          isOpen={isModalOpen}
+          originalUrl={editingUrl?.originalUrl || ""}
+          onClose={() => setIsModalOpen(false)}
+          onSave={({ originalUrl }) => {
+            if (!editingUrl) return;
+
+            const updatedUrls = urls.map((url) =>
+              url.id === editingUrl.id ? { ...url, originalUrl } : url
+            );
+            setUrls(updatedUrls);
+            // localStorage.setItem("urls", JSON.stringify(updatedUrls));
+            setIsModalOpen(false);
+          }}
+        />
       </main>
     </>
   );

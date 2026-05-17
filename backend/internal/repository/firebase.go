@@ -17,7 +17,7 @@ type FirebaseService struct {
 func NewFirebaseService() (*FirebaseService, error) {
 
 	ctx := context.Background()
-	opt := option.WithCredentialsFile("../../firebase-admin-sdk.json")
+	opt := option.WithCredentialsFile("firebase-admin-sdk.json")
 
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {

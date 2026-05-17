@@ -1,30 +1,54 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 interface UrlItem {
-  id: string
-  originalUrl: string
-  shortUrl: string
+  id: string;
+  originalUrl: string;
+  shortUrl: string;
 }
 
 function App() {
-  const [urlInput, setUrlInput] = useState('')
-  const [urls, setUrls] = useState<UrlItem[]>([{
-  id: '1',
-  originalUrl: 'https://www.exemplo.com/uma-url-muito-longa',
-  shortUrl: 'http://encurtae.com/abc123'
-  }])
+  const [urlInput, setUrlInput] = useState("");
+  const [urls, setUrls] = useState<UrlItem[]>([
+    {
+      id: "1",
+      originalUrl: "https://www.exemplo.com/uma-url-muito-longa",
+      shortUrl: "http://encurtae.com/abc123",
+    },
+  ]);
 
-  function handleAddUrl() {
-    if (!urlInput.trim()) return
-    // Adicionar a requisição para o backend
-    const newUrl: UrlItem = {
-      id: Date.now().toString(),
-      originalUrl: urlInput,
-      shortUrl: `http://encurtae.com/${Math.random().toString(36).substring(7)}`
-    }
-    setUrls([...urls, newUrl])
-    setUrlInput('')
+  async function handleAddUrl() {
+    if (!urlInput.trim()) return;
+
+    fetch("http://localhost:8080/post", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ originalUrl: urlInput }),
+    })
+      .then(async (response) => {
+        const text = await response.text();
+
+        if (!response.ok) {
+          throw new Error(text);
+        }
+
+        return JSON.parse(text);
+      })
+      .then((data) => {
+        const newUrl: UrlItem = {
+          id: data.id,
+          originalUrl: data.originalUrl,
+          shortUrl: data.shortUrl,
+        };
+
+        setUrls((prev) => [...prev, newUrl]);
+        setUrlInput("");
+      })
+      .catch((error) => {
+        console.error("Erro ao encurtar a URL:", error);
+      });
   }
 
   return (
@@ -33,7 +57,7 @@ function App() {
         <h1>Encurtaê</h1>
         <p>Crie links encurtados para suas URL's</p>
         <section>
-          <div className='new-url-container'>
+          <div className="new-url-container">
             <input
               type="text"
               placeholder="Cole sua URL aqui..."
@@ -48,7 +72,10 @@ function App() {
               <li key={url.id}>
                 <strong>Original:</strong> {url.originalUrl} <br />
                 <strong>Encurtada:</strong> {url.shortUrl}
-                <button className='dangerous-btn' onClick={() => setUrls(urls.filter((u) => u.id !== url.id))}>
+                <button
+                  className="dangerous-btn"
+                  onClick={() => setUrls(urls.filter((u) => u.id !== url.id))}
+                >
                   Excluir
                 </button>
               </li>
@@ -57,7 +84,7 @@ function App() {
         </section>
       </main>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

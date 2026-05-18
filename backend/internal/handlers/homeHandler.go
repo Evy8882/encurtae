@@ -11,7 +11,7 @@ func enableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		// liberar qualquer origem
-		w.Header().Set("Access-Control-Allow-Origin", "https://encurtae.vercel.app/")
+		w.Header().Set("Access-Control-Allow-Origin", "https://encurtae.vercel.app")
 
 		// métodos permitidos
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")

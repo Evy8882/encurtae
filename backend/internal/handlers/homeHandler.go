@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"context"
+	"encurtae/internal/repository"
 	"fmt"
 	"net/http"
 )
@@ -32,15 +34,28 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func Init() {
+	firebaseService, err := repository.NewFirebaseService()
+	if err != nil {
+		fmt.Println("Erro ao inicializar Firebase:", err)
+		return
+	}
+
+	client, err := firebaseService.App.Firestore(context.Background())
+	if err != nil {
+		fmt.Println("Erro ao inicializar Firestore:", err)
+		return
+	}
+
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", homeHandler)
 	mux.HandleFunc("/post", postHandler)
 	mux.HandleFunc("/delete", deleteHandler)
+	mux.HandleFunc("/r/", getHandler(client))
 
 	fmt.Println("Servidor rodando na porta 8080")
 
-	err := http.ListenAndServe(":8080", enableCORS(mux))
+	err = http.ListenAndServe(":8080", enableCORS(mux))
 	if err != nil {
 		fmt.Println("Erro ao iniciar servidor:", err)
 	}

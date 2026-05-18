@@ -36,6 +36,7 @@ func Init() {
 
 	mux.HandleFunc("/", homeHandler)
 	mux.HandleFunc("/post", postHandler)
+	mux.HandleFunc("/delete", deleteHandler)
 
 	fmt.Println("Servidor rodando na porta 8080")
 

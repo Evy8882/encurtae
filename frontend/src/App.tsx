@@ -56,6 +56,25 @@ function App() {
       });
   }
 
+  function handleDeleteUrl(id: string) {
+    fetch(`http://localhost:8080/delete?id=${id}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to delete URL");
+        }
+        setUrls((prev) => prev.filter((url) => url.id !== id));
+        localStorage.setItem(
+          "urls",
+          JSON.stringify(urls.filter((url) => url.id !== id))
+        );
+      })
+      .catch((error) => {
+        console.error("Erro ao excluir a URL:", error);
+      });
+  }
+
   return (
     <>
       <main>
@@ -80,7 +99,7 @@ function App() {
                 <div className="actions">
                 <button
                   className="dangerous-btn"
-                  onClick={() => setUrls(urls.filter((u) => u.id !== url.id))}
+                  onClick={() => handleDeleteUrl(url.id)}
                 >
                   Excluir
                 </button>

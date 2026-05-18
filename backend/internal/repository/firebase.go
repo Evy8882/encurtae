@@ -24,6 +24,8 @@ func NewFirebaseService() (*FirebaseService, error) {
 		return nil, fmt.Errorf("error initializing app: %v", err)
 	}
 
+	
+
 	authClient, err := app.Auth(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error getting Auth client: %v", err)
@@ -33,4 +35,23 @@ func NewFirebaseService() (*FirebaseService, error) {
 		App:  app,
 		Auth: authClient,
 	}, nil
+}
+
+func (s *FirebaseService) DeleteUrl(ctx context.Context, id string) error {
+	if s == nil || s.App == nil {
+		return fmt.Errorf("firebase app not initialized")
+	}
+
+	client, err := s.App.Firestore(ctx)
+	if err != nil {
+		return fmt.Errorf("error getting Firestore client: %v", err)
+	}
+	defer client.Close()
+
+	_, err = client.Collection("urls").Doc(id).Delete(ctx)
+	if err != nil {
+		return fmt.Errorf("error deleting URL: %v", err)
+	}
+
+	return nil
 }

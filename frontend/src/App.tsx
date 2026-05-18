@@ -121,11 +121,25 @@ function App() {
           onSave={({ originalUrl }) => {
             if (!editingUrl) return;
 
-            const updatedUrls = urls.map((url) =>
-              url.id === editingUrl.id ? { ...url, originalUrl } : url
-            );
-            setUrls(updatedUrls);
-            // localStorage.setItem("urls", JSON.stringify(updatedUrls));
+            fetch(`http://localhost:8080/edit?id=${editingUrl.id}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ originalUrl }),
+            }).then((response) => {
+              if (!response.ok) {
+                throw new Error("Failed to update URL");
+              }
+              const updatedUrls = urls.map((url) =>
+                url.id === editingUrl.id ? { ...url, originalUrl } : url
+              );
+              setUrls(updatedUrls);
+              localStorage.setItem("urls", JSON.stringify(updatedUrls));
+              setIsModalOpen(false);
+            }).catch((error) => {
+              console.error("Erro ao atualizar a URL:", error);
+            });
             setIsModalOpen(false);
           }}
         />

@@ -50,6 +50,7 @@ func Init() {
 
 	mux.HandleFunc("/", homeHandler)
 	mux.HandleFunc("/post", postHandler)
+	mux.HandleFunc("/edit", putHandler)
 	mux.HandleFunc("/delete", deleteHandler)
 	mux.HandleFunc("/r/", getHandler(client))
 

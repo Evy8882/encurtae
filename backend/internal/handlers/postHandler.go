@@ -78,7 +78,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"id":          id,
-		"shortUrl":    fmt.Sprintf("http://localhost:8080/r/%s", shortUrl), // Substituir pelo domínio real
+		"shortUrl":    fmt.Sprintf("https://encurtae.onrender.com/r/%s", shortUrl), // Substituir pelo domínio real
 		"originalUrl": originalUrl,
 	})
 }

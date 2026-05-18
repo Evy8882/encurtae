@@ -24,7 +24,7 @@ function App() {
   async function handleAddUrl() {
     if (!urlInput.trim()) return;
 
-    fetch("http://localhost:8080/post", {
+    fetch("https://encurtae.onrender.com/post", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ function App() {
   }
 
   function handleDeleteUrl(id: string) {
-    fetch(`http://localhost:8080/delete?id=${id}`, {
+    fetch(`https://encurtae.onrender.com/delete?id=${id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -121,7 +121,7 @@ function App() {
           onSave={({ originalUrl }) => {
             if (!editingUrl) return;
 
-            fetch(`http://localhost:8080/edit?id=${editingUrl.id}`, {
+            fetch(`https://encurtae.onrender.com/edit?id=${editingUrl.id}`, {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",
